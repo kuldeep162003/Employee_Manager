@@ -1,0 +1,333 @@
+// import React, { useEffect, useState } from "react";
+// import { Link } from "react-router-dom";
+
+// // const people = [
+// //   {
+// //     name: "John Doe",
+// //     title: "Front-end Developer",
+// //     department: "Engineering",
+// //     email: "john@devui.com",
+// //     role: "Developer",
+// //     image:
+// //       "https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80",
+// //   },
+// //   {
+// //     name: "Jane Doe",
+// //     title: "Back-end Developer",
+// //     department: "Engineering",
+// //     email: "jane@devui.com",
+// //     role: "CTO",
+// //     image:
+// //       "https://images.unsplash.com/photo-1639149888905-fb39731f2e6c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80",
+// //   },
+// // ];
+
+// const HomePage = () => {
+//   const [empData, setEmpData] = useState();
+
+//   const getAllData = async () => {
+//     try {
+//       const getPeople = await fetch(
+//         `${process.env.REACT_APP_BASE_URL}/getallUsers`,
+//         {
+//           method: "GET",
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       );
+
+//       const res = await getPeople.json();
+//       setEmpData(res);
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     getAllData();
+//   },[]);
+//   console.log(empData);
+
+//   // console.log(empData);
+
+//   return (
+//     <>
+//       <section className="container px-4 mx-auto py-4">
+//         <div className="flex items-center justify-between">
+//           <div>
+//             <h2 className="text-lg font-medium text-white">
+//               Employees
+//             </h2>
+//             <p className="mt-1 text-sm text-gray-300">
+//               This is a list of all employees. You can add new employees, edit
+//               or delete existing ones.
+//             </p>
+//           </div>
+//           <Link to={"/addemployee"}>
+//             <div>
+//               <button className="rounded-md bg-indigo-600 px-3.5 py-1.5 text-sm font-semibold leading-7 text-white hover:bg-indigo-500 ">
+//                 Add Employee
+//               </button>
+//             </div>
+//           </Link>
+//         </div>
+//         <div className="flex flex-col mt-6">
+//           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+//             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+//               <div className="overflow-hidden border border-gray-700 rounded-lg">
+//                 <table className="min-w-full divide-y divide-gray-700">
+//                   <thead className="bg-gray-700">
+//                     <tr>
+//                       <th
+//                         scope="col"
+//                         className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-400"
+//                       >
+//                         <span>Employee</span>
+//                       </th>
+//                       <th
+//                         scope="col"
+//                         className="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-400"
+//                       >
+//                         Title
+//                       </th>
+
+//                       <th
+//                         scope="col"
+//                         className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-400"
+//                       >
+//                         Role
+//                       </th>
+//                     </tr>
+//                   </thead>
+
+//                   <tbody className="divide-gray-700 bg-gray-900">
+//                     {empData?.data.map((person) => (
+//                       <tr key={person.name}>
+//                         <td className="py-4 px-4 whitespace-nowrap">
+//                           <div className="flex items-center">
+//                             <div className="flex-shrink-0 h-10 w-10">
+//                               <img
+//                                 className="h-10 w-10 rounded-full object-cover"
+//                                 src={person.image}
+//                                 alt=""
+//                               />
+//                             </div>
+//                             <div className="ml-4">
+//                               <div className="text-sm font-medium text-gray-100">
+//                                 {person.name}
+//                               </div>
+//                               <div className="text-sm text-gray-300">
+//                                 {person.email}
+//                               </div>
+//                             </div>
+//                           </div>
+//                         </td>
+//                         <td className="px-12 py-4 whitespace-nowrap">
+//                           <div className="text-sm text-gray-100">
+//                             {person.title}
+//                           </div>
+//                           <div className="text-sm text-gray-300">
+//                             {person.department}
+//                           </div>
+//                         </td>
+
+//                         <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-300">
+//                           {person.role}
+//                         </td>
+//                       </tr>
+//                     ))}
+//                   </tbody>
+//                 </table>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </section>
+//     </>
+//   );
+// };
+
+// export default HomePage;
+
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { MdModeEditOutline } from "react-icons/md";
+import ConfCard from "../components/ConfCard";
+import { toast } from "react-hot-toast"
+import ConfEditCard from "../components/ConfEditCard";
+
+function HomePage(){
+  const navigate = useNavigate();
+  const [people, setPeople] = useState([]);
+  const [confirmDelete, setConfirmDelete] = useState({show: false, employeeId: null});
+  const [confirmEdit, setConfirmEdit] = useState({show: false, employeeId: null})
+
+  const getData = async() => {
+    try{
+      const res = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/users`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      const result = await res.json();
+      console.log(result);
+      result.data === undefined ? setPeople([]) : setPeople(result.data);
+    }
+    catch(e){
+      console.error(e.message);
+      setPeople([]);
+    }
+  }
+
+  async function deleteEmployee(){
+    try{
+      const res = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/users/deleteUser/${confirmDelete.employeeId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      const result = res.json();
+      toast.success("Successfully deleted");
+      getData();
+    }
+    catch(e){
+      console.error(e.message);
+      toast.error("Error Occured! Data not deleted");
+    }
+  }
+
+  async function editEmployee(obj){
+    try{
+      const res = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/users/editUser/${confirmEdit.employeeId}`,
+        {
+          method: 'PUT',
+          headers: {
+            "Content-Type" : "application/json"
+          },
+          body: JSON.stringify(obj)
+        }
+      );
+  
+      const result = res.json();
+      toast.success("Data Updated Successfully");
+      getData();
+    } catch(e){
+      console.error(e.message);
+      toast.error("Error Occured! Data not updated");
+    }
+  }
+
+  function deleteClickHandler(employeeId){
+    setConfirmDelete({show: true, employeeId})
+  }
+  
+  function confirmDeleteHandler(){
+    deleteEmployee();
+    setConfirmDelete({show: false, employeeId: null})
+  }
+  
+  function cancelDeleteHandler(){
+    setConfirmDelete({show: false, employeeId: null})
+  }
+  
+  function editClickHandler(employeeId){
+    setConfirmEdit({show: true, employeeId})
+  }
+
+  function confirmEditHandler(obj){
+    editEmployee(obj);
+    setConfirmEdit({show: false, employeeId: null});
+  }
+
+  function cancelEditHandler(){
+    setConfirmEdit({show: false, employeeId: null});
+  }
+
+
+  useEffect(()=>{
+    getData();
+  }, [])
+
+  return (
+    <div className="flex flex-col items-center">
+      <div className="text-gray-100 w-[90%] max-w-[1200px] flex items-center justify-between gap-4 py-4">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-2xl font-semibold">Employee</h2>
+          <p className="text-sm">This is the list of current Employees. You can add new employees or delete the existing employee data</p>
+        </div>
+        <div>
+          <button onClick={() => navigate("/create-employee")} className="bg-blue-400 rounded-md text-gray-100 px-4 py-2 text-sm font-semibold">Add Employee</button>
+        </div>
+      </div>
+
+      <div className="w-[90%] max-w-[1200px]">
+        <div className="w-full grid grid-cols-1 px-2 gap-1">
+          <div className="grid grid-cols-[5fr_3fr_2fr] text-left text-gray-400 font-bold bg-gray-800 rounded-md py-2 px-4">
+            <div>Employee</div>
+            <div>Title</div>
+            <div>Role</div>
+          </div>
+          {
+            people?.length === 0 ?
+            ( <div className="text-gray-50 text-center text-4xl mt-[100px]">No Empolyees in the Database</div> )
+            :
+            (people.map((person) => {
+              return (
+                <div key={person._id} className="grid grid-cols-[5fr_3fr_2fr] text-left text-gray-100 bg-gray-700 rounded-lg px-5 py-2">
+                  <div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-11">
+                        <img src={person.image} alt="" className="rounded-full" />
+                      </div>
+                      <div className="flex flex-col justify-center gap-[2px]">
+                        <p className="font-semibold leading-4">{person.name}</p>
+                        <p className="text-sm text-gray-300">{person.email}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    <p className="">{person.title}</p>
+                    <p className="text-sm text-gray-300">{person.department}</p>
+                  </div>
+                  <div className="flex items-center justify-between pr-4">
+                    {person.role}
+
+                    <div className="flex gap-5">
+                      <button onClick={() => editClickHandler(person._id)}>
+                        <MdModeEditOutline />
+                      </button>
+                      <button onClick={() => deleteClickHandler(person._id)}>
+                        <RiDeleteBin6Line />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            }))
+          }
+        </div>
+      </div>
+
+      {
+        confirmDelete.show && <ConfCard confirmDeleteHandler={confirmDeleteHandler} cancelDeleteHandler={cancelDeleteHandler}/>
+      }
+      {
+        confirmEdit.show && <ConfEditCard confirmEditHandler={confirmEditHandler} cancelEditHandler={cancelEditHandler}/>
+      }
+    </div>
+  );
+}
+
+export default HomePage;
