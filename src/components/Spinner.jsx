@@ -5,8 +5,6 @@ const Spinner = () => {
         <div className="w-full flex justify-center translate-y-24">
             <div class="spinner"></div>
         </div>
-        
-        
     );
 }
 
