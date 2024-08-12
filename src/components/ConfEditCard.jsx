@@ -22,7 +22,7 @@ function ConfEditCard({confirmEditHandler, cancelEditHandler}){
     }
 
     return (
-        <div className="w-screen h-screen absolute top-0 left-0">
+        <div className="w-screen h-screen fixed top-0 left-0">
             <div onClick={cancelEditHandler} className="w-full h-full overflow-hidden bg-slate-300 opacity-50 absolute top-0 left-0"></div>
             <div className="bg-gray-200 absolute flex flex-col justify-center items-center px-10 py-5 rounded-md top-[56%] left-[50%] -translate-x-[50%] -translate-y-[70%]">
                 <form onSubmit={submitHandler} className="flex flex-col gap-2">
