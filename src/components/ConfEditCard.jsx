@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { MdErrorOutline } from "react-icons/md";
 
 function ConfEditCard({confirmEditHandler, cancelEditHandler}){
     const [formData, setFormData] = useState({name:"", email:"", title:"", department:"", role:""})
@@ -24,7 +23,7 @@ function ConfEditCard({confirmEditHandler, cancelEditHandler}){
     return (
         <div className="w-screen h-screen fixed top-0 left-0">
             <div onClick={cancelEditHandler} className="w-full h-full overflow-hidden bg-slate-300 opacity-50 absolute top-0 left-0"></div>
-            <div className="bg-gray-200 absolute flex flex-col justify-center items-center px-10 py-5 rounded-md top-[56%] left-[50%] -translate-x-[50%] -translate-y-[70%]">
+            <div className="bg-gray-200 absolute flex flex-col justify-center items-center px-10 py-5 rounded-md bottom-[50%] left-[50%] -translate-x-[50%] translate-y-[45%]">
                 <form onSubmit={submitHandler} className="flex flex-col gap-2">
                     <div className="font-semibold text-[1.2rem]">Fill only the fields you wish to change!</div>
                     <div className="flex flex-col gap-1">
