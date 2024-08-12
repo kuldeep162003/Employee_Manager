@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -117,77 +116,90 @@ function HomePage(){
   }, [])
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="text-gray-100 w-[90%] max-w-[1200px] flex items-center justify-between gap-4 py-4">
+    <div className="flex flex-col items-center px-4 pb-6">
+      <div className="text-gray-100 w-full max-w-[1200px] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-4">
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-semibold">Employee</h2>
-          <p className="text-sm">This is the list of current Employees. You can add new employees or delete the existing employee data</p>
+          <p className="text-sm">
+            This is the list of current Employees. You can add new employees or delete the existing
+            employee data.
+          </p>
         </div>
         <div>
-          <button onClick={() => navigate("/create-employee")} className="bg-blue-400 rounded-md text-gray-100 px-4 py-2 text-sm font-semibold">Add Employee</button>
+          <button
+            onClick={() => navigate("/create-employee")}
+            className="bg-blue-400 rounded-md text-gray-100 px-4 py-2 text-sm font-semibold mt-2 sm:mt-0"
+          >
+            Add Employee
+          </button>
         </div>
       </div>
-
-      <div className="w-[90%] max-w-[1200px]">
-        <div className="w-full grid grid-cols-1 px-2 gap-1">
-          <div className="grid grid-cols-[5fr_3fr_2fr] text-left text-gray-400 font-bold bg-gray-800 rounded-md py-2 px-4">
+    
+      <div className="w-full max-w-[1200px]">
+        <div className="w-full grid grid-cols-1 gap-1">
+          <div className="grid grid-cols-1 sm:grid-cols-[5fr_3fr_2fr] text-left text-gray-400 font-bold bg-gray-800 rounded-md py-2 px-4">
             <div>Employee</div>
-            <div>Title</div>
-            <div>Role</div>
+            <div className="hidden sm:block">Title</div>
+            <div className="hidden sm:block">Role</div>
           </div>
-          {
-            loding ? (
-              <Spinner></Spinner>
-            )
-            :
-            (
-              people?.length === 0 ?
-              ( <div className="text-gray-50 text-center text-4xl mt-[100px]">No Empolyees in the Database</div> )
-              :
-              (people.map((person) => {
-                return (
-                  <div key={person._id} className="grid grid-cols-[5fr_3fr_2fr] text-left text-gray-100 bg-gray-700 rounded-lg px-5 py-2">
-                    <div>
-                      <div className="flex items-center gap-4">
-                        <div className="w-11">
-                          <img src={person.image} alt="" className="rounded-full" />
-                        </div>
-                        <div className="flex flex-col justify-center gap-[2px]">
-                          <p className="font-semibold leading-4">{person.name}</p>
-                          <p className="text-sm text-gray-300">{person.email}</p>
-                        </div>
+          {loding ? (
+            <Spinner></Spinner>
+          ) : people?.length === 0 ? (
+            <div className="text-gray-50 text-center text-2xl mt-10">
+              No Employees in the Database
+            </div>
+          ) : (
+            people.map((person) => {
+              return (
+                <div
+                  key={person._id}
+                  className="grid grid-cols-1 sm:grid-cols-[5fr_3fr_2fr] text-left text-gray-100 bg-gray-700 rounded-lg px-5 py-4 gap-4"
+                >
+                  <div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-11">
+                        <img src={person.image} alt="" className="rounded-full" />
                       </div>
-                    </div>
-                    <div className="flex flex-col justify-center">
-                      <p className="">{person.title}</p>
-                      <p className="text-sm text-gray-300">{person.department}</p>
-                    </div>
-                    <div className="flex items-center justify-between pr-4">
-                      {person.role}
-
-                      <div className="flex gap-5">
-                        <button onClick={() => editClickHandler(person._id)}>
-                          <MdModeEditOutline />
-                        </button>
-                        <button onClick={() => deleteClickHandler(person._id)}>
-                          <RiDeleteBin6Line />
-                        </button>
+                      <div className="flex flex-col justify-center gap-1">
+                        <p className="font-semibold leading-4">{person.name}</p>
+                        <p className="text-sm text-gray-300">{person.email}</p>
                       </div>
                     </div>
                   </div>
-                );
-              }))
-            )
-          }
+                  <div className="flex flex-col justify-center mt-4 sm:mt-0">
+                    <p>{person.title}</p>
+                    <p className="text-sm text-gray-300">{person.department}</p>
+                  </div>
+                  <div className="flex items-center justify-between gap-4 mt-4 sm:mt-0">
+                    <p>{person.role}</p>
+                    <div className="flex gap-3">
+                      <button onClick={() => editClickHandler(person._id)}>
+                        <MdModeEditOutline />
+                      </button>
+                      <button onClick={() => deleteClickHandler(person._id)}>
+                        <RiDeleteBin6Line />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
-
-      {
-        confirmDelete.show && <ConfCard confirmDeleteHandler={confirmDeleteHandler} cancelDeleteHandler={cancelDeleteHandler}/>
-      }
-      {
-        confirmEdit.show && <ConfEditCard confirmEditHandler={confirmEditHandler} cancelEditHandler={cancelEditHandler}/>
-      }
+    
+      {confirmDelete.show && (
+        <ConfCard
+          confirmDeleteHandler={confirmDeleteHandler}
+          cancelDeleteHandler={cancelDeleteHandler}
+        />
+      )}
+      {confirmEdit.show && (
+        <ConfEditCard
+          confirmEditHandler={confirmEditHandler}
+          cancelEditHandler={cancelEditHandler}
+        />
+      )}
     </div>
   );
 }
