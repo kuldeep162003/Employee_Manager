@@ -9,7 +9,7 @@ function ConfCard({confirmDeleteHandler, cancelDeleteHandler}){
                 <p className="font-semibold text-2xl">Are you sure?</p>
                 <p className="mb-4">You won't be able to revert this!</p>
                 <div className="w-full flex justify-between">
-                    <button className="bg-blue-500 text-gray-100 font-semibold px-4 py-1 rounded-md" onClick={confirmDeleteHandler}>Yes, delete it!</button>
+                    <button className="bg-blue-500 text-gray-100 font-semibold px-4 py-1 rounded-md" onClick={confirmDeleteHandler}>Delete</button>
                     <button className="bg-red-500 text-gray-100 font-semibold px-4 py-1 rounded-md" onClick={cancelDeleteHandler}>Cancel</button>
                 </div>
             </div>
