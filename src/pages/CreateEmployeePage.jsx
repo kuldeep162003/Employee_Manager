@@ -7,8 +7,8 @@ const CreateEmployeePage = () => {
   const navigate = useNavigate();
   
   return (
-    <div className="w-screen h-screen relative">
-      <div className="h-full grid grid-cols-2 grid-rows-1">
+    <div className="w-screen h-screen relative pb-6">
+      <div className="h-full grid md:grid-cols-2 md:grid-rows-1">
         <div className="relative w-full h-full overflow-hidden">
           <img
             src="https://images.pexels.com/photos/927022/pexels-photo-927022.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
